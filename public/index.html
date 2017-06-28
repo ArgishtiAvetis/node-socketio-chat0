@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+    <head><title>Hello world</title></head>
+    <script src="/socket.io/socket.io.js"></script>
+    <script
+  src="https://code.jquery.com/jquery-3.2.1.min.js"
+  integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+  crossorigin="anonymous"></script>
+    <script>
+      	var socket = io();
+     	$(document).ready(function() {
+     		$('.chat').hide();
+     	});
+
+        function setUsername(){
+            socket.emit('setUsername', document.getElementById('name').value);
+        };
+
+        var user;
+
+        socket.on('userExists', function(data){
+            document.getElementById('error-container').innerHTML = data;
+        });
+
+        socket.on('userSet', function(data){
+            user = data.username;
+            $('.login').hide();
+            $('.chat').show();
+        });
+
+        function sendMessage(){
+            var msg = document.getElementById('message').value;
+            if(msg){
+                socket.emit('msg', {message: msg, user: user});
+            }
+        }
+
+        socket.on('newmsg', function(data){
+            if(user){
+                document.getElementById('message-container').innerHTML += '<div><b>' + data.user + '</b>: ' + data.message + '</div>'
+            }
+        })
+
+     //    socket.on('onlineUsers', function(data) { 
+     //    	$('#usersList').append("-> " + data.username);
+    	// });
+
+    </script>
+
+    <body>
+
+
+    	<div id="usersList"></div>
+
+    	<div class="login">
+    		<div id="error-container" style="color: red"></div>
+        	<input id="name" type="text" name="name" value="" placeholder="Enter your name!">
+        	<button type="button" name="button" onclick="setUsername()">Join the chat!</button>
+    	</div>
+
+    	<div class="chat">
+    		<h1>Start chatting :) </h1><input type="text" id="message">
+            <button type="button" name="button" onclick="sendMessage()">Send</button>
+            <div id="message-container"></div>
+    	</div>
+
+    </body>
+</html>
