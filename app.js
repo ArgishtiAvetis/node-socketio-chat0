@@ -4,7 +4,7 @@ var http = require('http').Server(app);
 var io = require('socket.io')(http);
 var join = require('path').join;
 
-app.set('port', 8080 || process.env.PORT);
+var port = process.env.PORT || 8080;
 
 app.use(express.static(join(__dirname, 'public')));
 
@@ -40,6 +40,6 @@ io.on('connection', function(socket){
 });
 
 
-http.listen(app.get('port'), function(){
-  console.log('listening on localhost:' + app.get('port'));
+http.listen(port, function(){
+  console.log('listening on localhost:' + port);
 });
