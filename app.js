@@ -16,21 +16,25 @@ users = [];
 
 
 io.on('connection', function(socket){
+
   console.log('A user connected');
+
+  socket.emit('onlineUsers', { username: users });
+
   socket.on('setUsername', function(data){
     console.log(data);
 
-    if(users.indexOf(data) > -1){
+    if (users.indexOf(data) > -1) {
       socket.emit('userExists', data + ' username is taken! Try some other username.');
-    }
-    else{
+    } else{
       users.push(data);
       socket.emit('userSet', {username: data});
   	  socket.emit('onlineUsers', { username: users });
     }
+    socket.emit('onlineUsers', { username: users });
   });
 
-  socket.emit('onlineUsers', { username: users });
+  
 
   socket.on('msg', function(data){
       //Send message to everyone

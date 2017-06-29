@@ -44,9 +44,14 @@
             }
         })
 
-     //    socket.on('onlineUsers', function(data) { 
-     //    	$('#usersList').append("-> " + data.username);
-    	// });
+        socket.on('onlineUsers', function(data) { 
+
+            // for (let i = 0, len = data.username.length; i < len; i++) {
+            //     $('#usersList').append("<br /> -> " + data.username[i]);
+            // }
+            $('#userslist').html("&nbsp; " + data.username);
+        	
+    	});
 
     </script>
 
