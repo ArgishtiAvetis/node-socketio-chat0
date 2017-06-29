@@ -1,11 +1,12 @@
 <!DOCTYPE html>
 <html>
     <head><title>Hello world</title></head>
+    <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
     <script src="/socket.io/socket.io.js"></script>
-    <script
-  src="https://code.jquery.com/jquery-3.2.1.min.js"
-  integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
-  crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <script>
       	var socket = io();
      	$(document).ready(function() {
@@ -33,11 +34,13 @@
             if(msg){
                 socket.emit('msg', {message: msg, user: user});
             }
+            $('#start-chatting').hide();
+            document.getElementById('message').value = '';
         }
 
         socket.on('newmsg', function(data){
             if(user){
-                document.getElementById('message-container').innerHTML += '<div><b>' + data.user + '</b>: ' + data.message + '</div>'
+                document.getElementById('message-container').innerHTML += '<div style="font-size: 20px"><b>' + data.user + '</b>: ' + data.message + '</div>'
             }
         })
 
@@ -50,18 +53,27 @@
     <body>
 
 
-    	<div id="usersList"></div>
+    	<div class="container">
+    		<div class="row">
+    			<div class="col-sm-12" style="padding: 100px 0 20px 0;">
+    				<div id="usersList"></div>
 
-    	<div class="login">
-    		<div id="error-container" style="color: red"></div>
-        	<input id="name" type="text" name="name" value="" placeholder="Enter your name!">
-        	<button type="button" name="button" onclick="setUsername()">Join the chat!</button>
-    	</div>
+			    	<div class="login">
+			    		<div id="error-container" style="color: red"></div>
+			        	<input id="name" type="text" name="name" value="" placeholder="Enter your name!" class="form-control">
+			        	<br />
+			        	<button class="btn btn-success" type="button" name="button" onclick="setUsername()">Join the chat!</button>
+			    	</div>
 
-    	<div class="chat">
-    		<h1>Start chatting :) </h1><input type="text" id="message">
-            <button type="button" name="button" onclick="sendMessage()">Send</button>
-            <div id="message-container"></div>
+			    	<div class="chat">
+			    		<div id="message-container" style="height: 400px; overflow: scroll"></div>
+			    		<h1 id="start-chatting">Start chatting :) </h1><input type="text" id="message" class="form-control" style="margin-top: 25px">
+			    		<br />
+			            <button class="btn btn-primary" type="button" name="button" onclick="sendMessage()">Send</button>
+			            
+			    	</div>
+    			</div>
+    		</div>
     	</div>
 
     </body>
